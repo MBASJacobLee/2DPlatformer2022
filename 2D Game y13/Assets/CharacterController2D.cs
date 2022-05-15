@@ -70,7 +70,9 @@ public class CharacterController2D : MonoBehaviour
 			// If the character has a ceiling preventing them from standing up, keep them crouching
 			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
 			{
-				crouch = false; // actually true
+				crouch = false; // if character can not stand, leave the colider disabled.
+				m_CrouchDisableCollider.enabled = false;
+
 			}
 		}
 
@@ -93,8 +95,7 @@ public class CharacterController2D : MonoBehaviour
 				// Disable one of the colliders when crouching
 				if (m_CrouchDisableCollider != null)
 					m_CrouchDisableCollider.enabled = false;
-			} 
-			else
+			} else
 			{
 				// Enable the collider when not crouching
 				if (m_CrouchDisableCollider != null)
