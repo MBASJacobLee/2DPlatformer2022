@@ -12,6 +12,10 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
 
+
+    public float runSpeed = 40f;
+    public float sprintSpeed = 60f;
+	
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
@@ -41,11 +45,12 @@ public class CharacterController2D : MonoBehaviour
 			OnCrouchEvent = new BoolEvent();
 	}
 	
-
+	
 	private void FixedUpdate()
 	{
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
+		
 
 		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
@@ -62,8 +67,9 @@ public class CharacterController2D : MonoBehaviour
 	}
 
 
-	public void Move(float move, bool crouch, bool jump)
+	public void Move(float move, bool crouch, bool jump, bool sprint)
 	{
+		Debug.Log(move);
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
 		{
@@ -71,7 +77,7 @@ public class CharacterController2D : MonoBehaviour
 			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
 			{
 				crouch = false; // if character can not stand, leave the colider disabled.
-				m_CrouchDisableCollider.enabled = false;
+				m_CrouchDisableCollider.enabled = true;
 
 			}
 		}
@@ -133,6 +139,15 @@ public class CharacterController2D : MonoBehaviour
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
+
+		if(sprint)
+		{
+			runSpeed = sprintSpeed;
+		}
+		else{
+			runSpeed = 40f;
+		}
+		
 	}
 
 

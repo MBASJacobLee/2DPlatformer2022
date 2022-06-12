@@ -6237,6 +6237,8 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 441797592}
   m_CeilingCheck: {fileID: 1642927174}
   m_CrouchDisableCollider: {fileID: 1203277259}
+  runSpeed: 40
+  sprintSpeed: 60
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6256,7 +6258,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1203277263}
-  runSpeed: 30
 --- !u!70 &1203277265
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

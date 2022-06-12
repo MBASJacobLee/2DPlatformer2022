@@ -9,11 +9,13 @@ public class Player : MonoBehaviour
     float time;
     float timeDelay;
     public Staminabar StaminaBar;
+    bool player_sprinting = false;
+
 
     void Start()
     {
         time = 0f;
-        timeDelay = 8f;
+        timeDelay = 2f;
         currentStamina = maxStamina;
         StaminaBar.SetMaxStamina(maxStamina);
     }
@@ -21,13 +23,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if(Input.GetKeyDown(KeyCode.Space))
         {
             TakeStam(1);
         }
 
-        time = time + 1f * Time.deltaTime;
+        time = time + Time.deltaTime;
         if (time >= timeDelay)
         {
             time = 0f;
