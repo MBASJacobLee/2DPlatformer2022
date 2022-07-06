@@ -1,4 +1,9 @@
-using System.Collections;
+/*
+This scrpit is my old movemnt scrpit beofer I updated it. It does nothing but It will remain in the file
+to show progression, and be a reference point for future developments
+*/
+
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,4 +50,4 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump, sprint);
         jump = false;
     }
-}
+}*/

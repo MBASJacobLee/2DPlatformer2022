@@ -1,4 +1,11 @@
-using UnityEngine;
+/*
+This scrpit is my old movemnt scrpit beofer I updated it. It does nothing but It will remain in the file
+to show progression, and be a reference point for future developments
+*/
+
+
+
+/*using UnityEngine;
 using UnityEngine.Events;
 // This is a cool tes for version control in github
 public class CharacterController2D : MonoBehaviour
@@ -162,3 +169,4 @@ public class CharacterController2D : MonoBehaviour
 		transform.localScale = theScale;
 	}
 }
+*/

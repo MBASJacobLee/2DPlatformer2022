@@ -5,10 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int maxStamina = 10;
+    public int maxJetpack = 5;
     public int currentStamina;
+    public int currentJet;
     float time;
     float timeDelay;
     public Staminabar StaminaBar;
+    public Jetpack_bar Jetpack_bar;
     bool player_sprinting = false;
 
 
@@ -17,7 +20,9 @@ public class Player : MonoBehaviour
         time = 0f;
         timeDelay = 2f;
         currentStamina = maxStamina;
+        currentJet = maxJetpack;
         StaminaBar.SetMaxStamina(maxStamina);
+        Jetpack_bar.SetMaxJetpack(maxJetpack);
     }
 
     // Update is called once per frame
@@ -26,6 +31,10 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             TakeStam(1);
+        }
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            Takejet(1);
         }
 
         time = time + Time.deltaTime;
@@ -36,7 +45,14 @@ public class Player : MonoBehaviour
             {
                 UpStam(1);
             }
+        
+
+            if(currentJet < maxJetpack)
+            {
+                UpJet(1);
+            }
         }
+        
         
     }
     void TakeStam(int stam)
@@ -52,5 +68,20 @@ public class Player : MonoBehaviour
         currentStamina += stam2;
 
         StaminaBar.SetStamina(currentStamina);
+    }
+
+    void Takejet(int Jetpack)
+    {
+        currentJet -= Jetpack;
+
+        Jetpack_bar.SetJetpack(currentJet);
+    }
+
+    void UpJet (int Jetpack2)
+    {
+        
+        currentJet += Jetpack2;
+
+        Jetpack_bar.SetJetpack(currentJet);
     }
 }
