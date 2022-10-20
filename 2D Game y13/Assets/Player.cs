@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
     public int maxStamina = 10;
@@ -12,7 +13,20 @@ public class Player : MonoBehaviour
     float timeDelay;
     public Staminabar StaminaBar;
     public Jetpack_bar Jetpack_bar;
-    bool player_sprinting = false;
+    public Collider2D m_Collider;
+    //head check
+    private bool isCellingBack;
+    private bool isCellingFront;
+    public Transform raycastStart;
+    public Transform raycastStart2;
+    public float checkRadius;
+    //public LayerMask whatiscelling;
+    
+    public BoxCollider2D boxcol;
+    public LayerMask laymask;
+    public bool roof;
+    public bool roof2;
+    public bool crouching;
 
 
     void Start()
@@ -23,11 +37,77 @@ public class Player : MonoBehaviour
         currentJet = maxJetpack;
         StaminaBar.SetMaxStamina(maxStamina);
         Jetpack_bar.SetMaxJetpack(maxJetpack);
+        m_Collider = GetComponent<Collider2D>();
     }
+    
+    void crouch()
+    {
+        float extrahigtht = 0.1f;
+        RaycastHit2D roofHit = Physics2D.Raycast(raycastStart.position, Vector2.up, 0.9f + extrahigtht, laymask);
+        /*Color raycolour;
+        if (roofHit.collider != null)
+        {
+            raycolour = Color.green;
+        }else {
+            raycolour = Color.red;
+        }*/
+        //Debug.DrawRay(raycastStart.position, Vector2.up * (0.9f + extrahigtht), raycolour, laymask);
 
+
+
+        RaycastHit2D roofHit2 = Physics2D.Raycast(raycastStart2.position, Vector2.up, 0.9f + extrahigtht, laymask);
+       /* Color raycolour2;
+        if (roofHit2.collider != null)
+        {
+            raycolour2 = Color.green;
+        }else {
+            raycolour2 = Color.red;
+        }*/
+        //Debug.DrawRay(raycastStart2.position, Vector2.up * (0.9f + extrahigtht), raycolour2, laymask);
+        if (roofHit2.collider != null){
+             roof2 = true;
+             Debug.Log("rood true" + roofHit2.transform.name);
+        }
+        else
+        {
+            roof2 = false;
+            Debug.Log("roof false");
+        }
+        if (Input.GetButton("crouch"))
+        {
+            boxcol.enabled = false;
+            crouching = true;
+        }
+        else
+        {
+            if (roof || roof2)
+            {
+                crouching = true;
+                boxcol.enabled = false;
+            }
+            else
+            {
+                crouching = false;
+                boxcol.enabled = true;
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
+        //RaycastHit2D roofHit = Physics2D.Raycast(boxCol.bounds.center, Vector2.up, 2f, laymask);
+        //isCellingFront = Physics2D.OverlapCircle(CellingCheckFront.position, checkRadius, whatiscelling);
+        //isCellingBack = Physics2D.OverlapCircle(CellingCheckBack.position, checkRadius, whatiscelling);
+        //isCelling = Physics2D.OverlapBox(CellingCheck, checkRadius, whatiscelling);
+        
+        /*if(hit.collider != null)
+        {
+            character_movement.roof_hit =  true;
+        }
+        else{
+            character_movement.roof_hit = false;
+        }*/
+
         if(Input.GetKeyDown(KeyCode.Space))
         {
             TakeStam(1);
@@ -53,7 +133,30 @@ public class Player : MonoBehaviour
             }
         }
         
+        /*if(!character_movement.crouching)
+        {
+            if(character_movement.roof_hit)
+            {
+                m_Collider.enabled = true;
+                
+            }
+
+        }
+        if(character_movement.crouching)
+        {
+            if(!character_movement.roof_hit)
+            {
+                m_Collider.enabled = false;
+            }
+        }
         
+
+        Debug.Log(isCellingFront);*/
+    }
+
+    void FixedUpdate()
+    {
+        crouch();
     }
     void TakeStam(int stam)
     {
@@ -85,3 +188,4 @@ public class Player : MonoBehaviour
         Jetpack_bar.SetJetpack(currentJet);
     }
 }
+

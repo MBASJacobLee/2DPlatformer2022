@@ -11,6 +11,7 @@ public class character_movement : MonoBehaviour
     private float sprintSpeed = 15f; 
     private float accelerRate = 1f;
     private float deaccelerRate = 5f;
+    private float crouchSpeed = 2f;
     public float jumprate = 6f;
     // Something important
     private float pnhorizontal;
@@ -32,6 +33,10 @@ public class character_movement : MonoBehaviour
     // Sinking weight things
     public float downforce;
     private float maxjpack =  15f;
+    // Crouching variables
+    [SerializeField] public static bool crouching = false;
+
+    public static bool roof_hit = false;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +53,6 @@ public class character_movement : MonoBehaviour
     {
         //moving
         rb.velocity = new Vector2(pnhorizontal * moveSpeed, rb.velocity.y );
-
         if (Input.GetButton ("Horizontal"))
         {
             if (moveSpeed < targetSpeed)
@@ -59,7 +63,6 @@ public class character_movement : MonoBehaviour
             {
                 moveSpeed = targetSpeed;
             }
-            
         }
         else 
         {
@@ -74,23 +77,18 @@ public class character_movement : MonoBehaviour
         {
             targetSpeed = sprintSpeed;
         }
-
         else
         {
             targetSpeed = 10f;
         }
-
-        if (moveSpeed > 0)
-		{
-			// ... flip the player.				
-            Flip();
-		}
-		// Otherwise if the input is moving the player left and the player is facing right...
-		else if (moveSpeed < 0)
-		{
-			// ... flip the player.
-    		Flip2();
-		}
+        if (Input.GetKey(KeyCode.S))
+        {
+            targetSpeed = crouchSpeed;
+        }
+        else
+        {
+            targetSpeed = 10f;
+        }
 
         
     }
@@ -101,9 +99,18 @@ public class character_movement : MonoBehaviour
     {
         pnhorizontal = Input.GetAxisRaw("Horizontal"); 
 
+        if (pnhorizontal > 0.1f)
+        {
+            transform.eulerAngles = new Vector2(0,180);
+        }
+        if (pnhorizontal < -0.1f)
+        {
+            transform.eulerAngles = new Vector2(0,0);
+        }
+
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatisground);
 
-        /*if(isGrounded && Input.GetKeyDown(KeyCode.Space) || jumprate <= 5 && Input.GetKeyDown(KeyCode.Space))
+        /*if(isGrounded && Input.GetKeyDown(KeyCode.Space)) || jumprate <= 5 && Input.GetKeyDown(KeyCode.Space))
         {
               rb.velocity = Vector2.up * jumpforce;
         }*/
@@ -126,14 +133,6 @@ public class character_movement : MonoBehaviour
             
         }
 
-
-        if(Input.GetKey(KeyCode.B))
-        {
-            if(!isGrounded)
-            {
-                rb.velocity = Vector2.down * downforce;
-            }
-        }
         if (Input.GetKey(KeyCode.V))
         {
             if(jpack <= 15f)
